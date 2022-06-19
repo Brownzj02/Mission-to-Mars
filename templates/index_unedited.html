@@ -61,14 +61,11 @@
         </div>
 
         {% for hemisphere in mars.hemispheres %}
-<!-- New Styling: allow 1 col for phone, 2 for tablet and larger -->
-        <div class="col-xs-12 col-sm-6">
-          <div class="thumbnail secondary">
-<!-- New Styling: make hemispgere images circles -->
-            <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}"
-            alt="..." class="img-circle">
+        <div class="col-md-6">
+          <div class="thumbnail">
+            <img src="{{hemisphere.img_url | default('static/images/error.png', true)}}" alt="...">
             <div class="caption">
-              <h3 class="text-primary">{{hemisphere.title}}</h3>
+              <h3>{{hemisphere.title}}</h3>
             </div>
           </div>
         </div>

@@ -30,7 +30,6 @@ def scrape_all():
 
 
 def mars_news(browser):
-
     # Scrape Mars News
     # Visit the mars nasa news site
     url = 'https://redplanetscience.com/'
@@ -42,7 +41,6 @@ def mars_news(browser):
     # Convert the browser html to a soup object and then quit the browser
     html = browser.html
     news_soup = soup(html, 'html.parser')
-
     # Add try/except for error handling
     try:
         slide_elem = news_soup.select_one('div.list_text')
@@ -98,7 +96,37 @@ def mars_facts():
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
 
-if __name__ == "__main__":
+def mars_hemispheres(browser):
+    # 1. Use browser to visit the URL 
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
 
+    # 2. Create a list to hold the images and titles.
+    hemisphere_image_urls = []
+
+    # 3. Write code to retrieve the image urls and titles for each hemisphere.
+    product_soup = soup(browser.html, 'html.parser')
+    product_list = product_soup \
+        .find('div', class_='collapsible results') \
+        .find_all('div', 'item')
+
+    for product in product_list:
+        link = product.find('a').get('href')
+        browser.visit(f"{url}{link}")
+        
+        hemi_soup = soup(browser.html, 'html.parser')
+        
+        hemi_title = hemi_soup.find('h2').text
+        
+        hemi_url = hemi_soup.find('a', string="Sample").get('href')
+        hemisphere_image_urls.append({
+            'img_url': f"{url}{hemi_url}",
+            'title': hemi_title })
+
+    # 4. Print the list that holds the dictionary of each image url and title.
+    return hemisphere_image_urls
+  
+
+if __name__ == "__main__":
     # If running as script, print scraped data
     print(scrape_all())
